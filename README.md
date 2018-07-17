@@ -1,4 +1,6 @@
-Role Name
+[![Build Status](https://travis-ci.org/slated/ansible-setup-role.svg?branch=master)](https://travis-ci.org/slated/ansible-setup-role)
+
+Setup Role
 =========
 
 Standard setup for fresh-built Ubuntu servers
@@ -28,7 +30,7 @@ private attributes. Typically created with
 `ssh-keygen -t rsa -C demo -N '' -b 3072 -f key`
 
     setup_ssh_host_key:
-      
+
 Dependencies
 ------------
 
@@ -74,4 +76,3 @@ Example Playbook
               rPeYovN7XBh7xWc835d77UV55taBnmKcBTx3Gb0uEJ350CuZwAGSF+U07xSmKTIY
               QBjYAwIRoOL6wTwPTchEAMBUgjA9rTtQgK2FsNr8DzBDDW9wE7M=
               -----END RSA PRIVATE KEY-----
-            
