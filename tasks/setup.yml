@@ -1,0 +1,45 @@
+---
+
+# to just apt upgrade, --tags=apt_upgrade[,reboot]
+- name: Upgrade apt packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+  tags: setup_apt_upgrade
+
+- name: Setup standard packages
+  apt:
+    update_cache: yes
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - locales
+    - build-essential
+    - ntp
+    - htop
+    - git
+    - mercurial
+  tags: setup_apt_packages
+
+- name: Set timezone
+  timezone:
+    name: '{{ setup_timezone }}'
+  tags: setup_timezone
+
+- name: Set locale
+  locale_gen:
+    name: "{{ setup_locale }}"
+    state: present
+
+- name: Set hostname
+  hostname:
+    name: '{{ inventory_hostname }}'
+  tags: setup_hostname
+
+- name: Update /etc/hostname file
+  lineinfile:
+    dest: /etc/hostname
+    regexp: .*
+    line: '{{ inventory_hostname }}'
+    create: yes
+  tags: setup_hostname

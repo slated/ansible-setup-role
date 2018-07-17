@@ -1,0 +1,20 @@
+---
+
+- name: Reboot
+  become: yes
+  shell: sleep 2 && shutdown -r now "rebooting via ansible setup"
+  async: 1
+  poll: 0
+  ignore_errors: true
+  when: setup_reboot is defined and setup_reboot
+
+- name: Waiting for reboot
+  become: false
+  wait_for:
+    host: '{{ ansible_host | default(inventory_hostname) }}'
+    port: 22
+    search_regex: OpenSSH
+    delay: 10
+  vars:
+    ansible_connection: local
+  when: setup_reboot is defined and setup_reboot

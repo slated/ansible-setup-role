@@ -1,0 +1,38 @@
+---
+# generate ssh key pair, optionally add to authorized_hosts
+
+- name: Create host ssh key
+  user:
+    name: '{{ ansible_user }}'
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+  when: not setup_ssh_host_key
+
+- name: Get host ssh key (usually for repo access)
+  slurp:
+    src: '.ssh/id_rsa.pub'
+  register: slurpfile
+  when: not setup_ssh_host_key
+
+- debug:
+    msg: "{{ slurpfile['content'] | b64decode }}\nPut keys somewhere, I'll wait..."
+  when: not setup_ssh_host_key
+
+- name: Use provided ssh host key (private)
+  copy:
+    dest: '.ssh/id_{{ setup_ssh_host_key.type }}'
+    content: '{{ setup_ssh_host_key.private }}'
+  when: setup_ssh_host_key
+
+- name: Use provided ssh host key (publid)
+  copy:
+    dest: '.ssh/id_{{ setup_ssh_host_key.type }}.pub'
+    content: '{{ setup_ssh_host_key.public }}'
+  when: setup_ssh_host_key
+
+- name: Add authorized access keys
+  authorized_key:
+    user: '{{ ansible_user }}'
+    key: '{{ item }}'
+  with_items: '{{ setup_authorized_host_keys }}'

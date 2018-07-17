@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    ansible_user: root
+    setup_ssh_host_key:
+      type: rsa
+      public: 'ssh-rsa AAAAB3NzaC just-for-test'
+
+      private: |
+        -----BEGIN RSA PRIVATE KEY-----
+        just-for-test
+        -----END RSA PRIVATE KEY-----
+
+  roles:
+    - role: ansible-setup-role
