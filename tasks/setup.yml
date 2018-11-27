@@ -32,8 +32,10 @@
   tags: setup_timezone
 
 - name: Set locale
-  command: '/usr/sbin/update-locale LANG={{ setup_locale }} LC_ALL={{ setup_locale }}'
-
+  locale_gen:
+    name: "{{ setup_locale }}"
+    state: present
+    
 # set hostname to be of form: web1.rc.slated
 - name: Set hostname
   hostname:
