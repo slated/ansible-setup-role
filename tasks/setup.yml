@@ -1,5 +1,10 @@
 ---
 
+- name: Add universe repo
+  apt_repository:
+    repo: deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} universe
+  when: setup_universe_repo
+
 # to just apt upgrade, --tags=apt_upgrade[,reboot]
 - name: Upgrade apt packages
   apt:
@@ -31,15 +36,24 @@
     name: "{{ setup_locale }}"
     state: present
 
+# set hostname to be of form: web1.rc.slated
 - name: Set hostname
   hostname:
-    name: '{{ inventory_hostname }}'
+    name: '{{ inventory_hostname }}.{{ target }}.{{ application }}'
   tags: setup_hostname
 
 - name: Update /etc/hostname file
   lineinfile:
     dest: /etc/hostname
     regexp: .*
-    line: '{{ inventory_hostname }}'
+    line: '{{ inventory_hostname }}.{{ target }}.{{ application }}'
+    create: yes
+  tags: setup_hostname
+
+- name: Update /etc/hosts file
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '^.* {{ inventory_hostname }}$'
+    line: '{{ ansible_default_ipv4.address }} {{ inventory_hostname }}.{{ target }}.{{ application }}'
     create: yes
   tags: setup_hostname

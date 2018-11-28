@@ -10,3 +10,10 @@ setup_authorized_host_keys: []
 
 # Ssh host key (instead of sshkeygen)
 setup_ssh_host_key:
+
+# safe defaults if not defined in inventory vars
+target: host
+application: slated
+
+# setup additional apt repo
+setup_universe_repo: no
