@@ -23,7 +23,6 @@
     - ntp
     - htop
     - git
-    - mercurial
   tags: setup_apt_packages
 
 - name: Set timezone
