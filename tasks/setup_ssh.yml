@@ -25,7 +25,7 @@
     content: '{{ setup_ssh_host_key.private }}'
   when: setup_ssh_host_key
 
-- name: Use provided ssh host key (publid)
+- name: Use provided ssh host key (public)
   copy:
     dest: '.ssh/id_{{ setup_ssh_host_key.type }}.pub'
     content: '{{ setup_ssh_host_key.public }}'
